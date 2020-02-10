@@ -47,8 +47,8 @@ void Robot::RobotPeriodic() {}
  */
 void Robot::AutonomousInit() {
   m_autoSelected = m_chooser.GetSelected();
-  // m_autoSelected = SmartDashboard::GetString("Auto Selector",
-  //     kAutoNameDefault);
+  m_autoSelected = frc::SmartDashboard::GetString("Auto Selector",
+       kAutoNameDefault);
   std::cout << "Auto selected: " << m_autoSelected << std::endl;
 
   if (m_autoSelected == kAutoNameCustom) {
@@ -68,26 +68,39 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {}
 
+double Robot::get_arm_position() { 
+    double incoming_value = pot.Get();
+    double degree_value = (incoming_value - horizontal_marker)*(1/270);
+    return (degree_value);
+  }
+void Robot::in_range(double current_degree){
+    if (((current_degree - horizontal_marker_degree) >= -8) && ((current_degree - horizontal_marker_degree) <= 8)) {
+      frc::SmartDashboard::PutNumber("In Range: ", current_degree);
+    }
+    else {
+      frc::SmartDashboard::PutNumber("Out of Range by: ", current_degree);
+    }
+  }
+
 void Robot::TeleopPeriodic() {
   //after the potentiometer is fixed, need to align the robot arm against the hardstop to save the value as bottom_marker
   //then need to find the horizontal marker which is the angle of the robot arm when the hanger is level (parallel to the ground)
   bottom_marker = 0.2;
   horizontal_marker = 0.4;
   horizontal_marker_degree = horizontal_marker * 270;
+  //frc::SmartDashboard::PutNumber("Horizontal Marker Degree", horizontal_marker_degree);
   
-  void get_arm_position(){
-    double incoming_value = pot.get;
-    degree_value = (incoming_value - horizontal_marker)*(1/270);
-    return (degree_value);
-  }
+  /*
   void in_range(current_degree){
     if (((current_degree - horizontal_marker_degree) >= -8) && ((current_degree - horizontal_marker_degree) <= 8)) {
-      frc::SmartDashboard::PutString("In Range:", current_degree);
+      frc::SmartDashboard::PutString("In Range: ", current_degree);
     }
     else {
-      frc::SmartDashboard::PutString("Out of Range by:", current_degree);
+      frc::SmartDashboard::PutString("Out of Range by: ", current_degree);
     }
-  }
+  }*/
+
+  //in_range(get_arm_position());
 
 }
 
