@@ -72,15 +72,16 @@ double Robot::get_arm_position() {
     double incoming_value = pot.Get();
     double degree_value = (incoming_value - horizontal_marker)*(1/270);
     return (degree_value);
-  }
+  };
+
 void Robot::in_range(double current_degree){
     if (((current_degree - horizontal_marker_degree) >= -8) && ((current_degree - horizontal_marker_degree) <= 8)) {
       frc::SmartDashboard::PutNumber("In Range: ", current_degree);
     }
     else {
       frc::SmartDashboard::PutNumber("Out of Range by: ", current_degree);
-    }
-  }
+    };
+  };
 
 void Robot::TeleopPeriodic() {
   //after the potentiometer is fixed, need to align the robot arm against the hardstop to save the value as bottom_marker
@@ -102,12 +103,13 @@ void Robot::TeleopPeriodic() {
 
   //in_range(get_arm_position());
 
-}
+};
 
 void Robot::TestPeriodic() {
+  //frc::SmartDashboard::PutData("Hello World");
   in_range(get_arm_position());
-}
+};
 
 #ifndef RUNNING_FRC_TESTS
-int main() { return frc::StartRobot<Robot>(); }
+int main() { return frc::StartRobot<Robot>(); };
 #endif
