@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
  
-#pragma once
+/* #pragma once
  
 #include <memory>
  
@@ -49,4 +49,24 @@ class AnalogPotentiometer : public ErrorBase,
   double m_fullRange, m_offset;
 };
  
-}  // namespace frc
+}  // namespace frc */ 
+
+#include <string>
+#include <frc/smartdashboard/SendableChooser.h>
+#include <frc/buttons/JoystickButton.h>
+#include <frc/AnalogPotentiometer.h>
+
+//after the potentiometer is fixed, need to align the robot arm against the hardstop to save the value as bottom_marker
+//then need to find the horizontal marker which is the angle of the robot arm when the hanger is level (parallel to the ground)
+#define bottomMarker (0.2)
+#define horizontalMarker (0.4)
+#define horizontalMarkerDeg (horizontalMarker * 270)
+
+class AnalogPot {
+  frc::AnalogPotentiometer pot {0, 270, 0};
+  public:
+    AnalogPot();
+    double get_arm_position();
+    void in_range(double current_degree);
+    //bool in_range();
+};

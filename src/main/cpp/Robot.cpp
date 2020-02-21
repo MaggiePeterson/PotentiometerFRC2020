@@ -11,17 +11,20 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
+#include "frc/DriverStation.h"
+
 void Robot::RobotInit() {
   m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
   m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
   frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
-  //int small_arm = 15;
-  //int pot_height = 9;
-  //int sWheel_to_Under_Pot = 12
-  //int pot_to_one_by_one = 0.5
-  //int bwheel_radius = 2;
-  //int normal_distance = sWheel_to_Under_Pot + pot_to_one_by_one + bwheel_radius
+  
+  //aPot = new AnalogPot();
+  AnalogPot aPot;
+  joystickContr = new frc::Joystick(0);
+  toggle = new frc::JoystickButton(joystickContr, 1); //the one you move in order to move the wheel along the hanger; if it moves, want to check the balance
+
+  
 }
 
 /**
@@ -68,7 +71,7 @@ void Robot::AutonomousPeriodic() {
 
 void Robot::TeleopInit() {}
 
-double Robot::get_arm_position() { 
+/* double Robot::get_arm_position() { 
     double incoming_value = pot.Get();
     double degree_value = (incoming_value - horizontal_marker)*(1/270);
     return (degree_value);
@@ -81,33 +84,22 @@ void Robot::in_range(double current_degree){
     else {
       frc::SmartDashboard::PutNumber("Out of Range by: ", current_degree);
     };
-  };
+  }; */
 
 void Robot::TeleopPeriodic() {
-  //after the potentiometer is fixed, need to align the robot arm against the hardstop to save the value as bottom_marker
-  //then need to find the horizontal marker which is the angle of the robot arm when the hanger is level (parallel to the ground)
-  bottom_marker = 0.2;
-  horizontal_marker = 0.4;
-  horizontal_marker_degree = horizontal_marker * 270;
+  //bottom_marker = 0.2;
+  //horizontal_marker = 0.4;
+  //horizontal_marker_degree = horizontal_marker * 270;
   //frc::SmartDashboard::PutNumber("Horizontal Marker Degree", horizontal_marker_degree);
-  
-  /*
-  void in_range(current_degree){
-    if (((current_degree - horizontal_marker_degree) >= -8) && ((current_degree - horizontal_marker_degree) <= 8)) {
-      frc::SmartDashboard::PutString("In Range: ", current_degree);
-    }
-    else {
-      frc::SmartDashboard::PutString("Out of Range by: ", current_degree);
-    }
-  }*/
-
   //in_range(get_arm_position());
-
+  if (toggle->Get()) {
+    aPot.in_range(aPot.get_arm_position());
+  }
 };
 
 void Robot::TestPeriodic() {
   //frc::SmartDashboard::PutData("Hello World");
-  in_range(get_arm_position());
+  
 };
 
 #ifndef RUNNING_FRC_TESTS
